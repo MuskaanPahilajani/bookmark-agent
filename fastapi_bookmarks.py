@@ -83,6 +83,15 @@ async def health() -> dict[str, str]:
     return {"status": "ok"}
 
 
+@app.get("/")
+async def root() -> dict[str, str]:
+    return {
+        "service": "BookmarkAI Synchronizer",
+        "health": "/health",
+        "docs": "/docs",
+    }
+
+
 @app.post("/sync")
 async def sync(payload: SyncRequest) -> Any:
     return await invoke_tool("sync", {"chrome": as_dicts(payload.chrome), "edge": as_dicts(payload.edge)})
