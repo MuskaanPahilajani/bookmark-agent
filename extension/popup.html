@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="popup.css">
+    <title>BookmarkAI</title>
+  </head>
+  <body>
+    <main>
+      <header><h1>BookmarkAI</h1><span id="count"></span></header>
+      <label for="backend">Backend URL</label>
+      <input id="backend" type="url" placeholder="https://bookmark-ai.cfapps.us10.hana.ondemand.com">
+      <div class="actions">
+        <button id="sync">Sync</button>
+        <button id="categorize">Categorize</button>
+        <button id="duplicates">Duplicates</button>
+      </div>
+      <form id="search-form">
+        <label for="query">Search bookmarks</label>
+        <div class="search-row"><input id="query" required placeholder="What are you looking for?"><button>Search</button></div>
+      </form>
+      <pre id="result" aria-live="polite">Ready.</pre>
+    </main>
+    <script src="popup.js"></script>
+  </body>
+</html>

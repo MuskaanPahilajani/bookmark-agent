@@ -1,0 +1,14 @@
+:root { color: #19221f; background: #f5f4ee; font-family: Georgia, serif; }
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 360px; }
+main { padding: 18px; }
+header { display: flex; align-items: baseline; justify-content: space-between; border-bottom: 2px solid #19221f; margin-bottom: 16px; }
+h1 { margin: 0 0 8px; font-size: 24px; letter-spacing: 0; }
+#count { color: #5a665f; font: 12px monospace; }
+label { display: block; font: 12px monospace; margin: 12px 0 5px; }
+input { width: 100%; border: 1px solid #a5aaa3; border-radius: 3px; padding: 9px; background: #fffefa; color: inherit; }
+.actions, .search-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 12px; }
+.search-row { grid-template-columns: 1fr auto; margin-top: 0; }
+button { border: 1px solid #19221f; border-radius: 3px; padding: 8px; background: #d0dfb4; color: #19221f; cursor: pointer; font: 12px monospace; }
+button:hover { background: #b8d292; }
+pre { white-space: pre-wrap; overflow: auto; max-height: 210px; margin: 15px 0 0; padding: 10px; border-left: 3px solid #698f5b; background: #e7ebe1; font: 11px/1.4 monospace; }

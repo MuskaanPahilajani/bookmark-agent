@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: bookmark-ai-synchronizer
+    runtime: python
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    startCommand: python fastapi_bookmarks.py
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.12.8"
+      - key: BOOKMARK_STORE_PATH
+        value: /var/data/bookmarks.json
+      - key: AICORE_BASE_URL
+        sync: false
+      - key: AICORE_AUTH_URL
+        sync: false
+      - key: AICORE_CLIENT_ID
+        sync: false
+      - key: AICORE_CLIENT_SECRET
+        sync: false
+      - key: AICORE_DEPLOYMENT_ID
+        sync: false
+      - key: AICORE_RESOURCE_GROUP
+        value: default
+    disk:
+      name: bookmark-data
+      mountPath: /var/data
+      sizeGB: 1

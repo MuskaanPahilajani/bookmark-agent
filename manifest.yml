@@ -1,0 +1,10 @@
+applications:
+  - name: bookmark-ai-synchronizer
+    memory: 512M
+    disk_quota: 512M
+    buildpacks:
+      - python_buildpack
+    command: python fastapi_bookmarks.py
+    env:
+      PYTHONUNBUFFERED: "1"
+      BOOKMARK_STORE_PATH: /home/vcap/app/data/bookmarks.json
