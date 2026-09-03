@@ -6,8 +6,9 @@ import asyncio
 import json
 import os
 import sys
+from operator import add
 from contextlib import AsyncExitStack
-from typing import Any, TypedDict
+from typing import Annotated, Any, TypedDict
 
 from langgraph.graph import END, START, StateGraph
 from mcp import ClientSession, StdioServerParameters
@@ -16,7 +17,7 @@ from openai import OpenAI
 
 
 class AgentState(TypedDict):
-    messages: list[dict[str, Any]]
+    messages: Annotated[list[dict[str, Any]], add]
 
 
 class BookmarkAgent:
