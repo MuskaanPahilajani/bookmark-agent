@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 def model_name() -> str:
     """Return the model configured by the selected AI Core deployment."""
-    return os.getenv("AICORE_MODEL_NAME", "gpt-4.1-nano")
+    return os.getenv("AICORE_MODEL_NAME", "gpt-4o-mini")
 
 
 def _required(name: str) -> str:

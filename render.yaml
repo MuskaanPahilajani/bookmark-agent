@@ -20,9 +20,9 @@ services:
       - key: AICORE_CLIENT_SECRET
         sync: false
       - key: AICORE_DEPLOYMENT_ID
-        value: dbb287aa19d03ae3
+        value: dc7a66e06efcb5bf
       - key: AICORE_MODEL_NAME
-        value: gpt-4.1-nano
+        value: gpt-4o-mini
       - key: AICORE_RESOURCE_GROUP
         value: default
     disk:
