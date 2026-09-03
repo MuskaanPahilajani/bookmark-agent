@@ -4,6 +4,10 @@
   "version": "1.0.0",
   "description": "Synchronize, organize, and search Chrome or Edge bookmarks.",
   "permissions": ["bookmarks", "storage"],
+  "host_permissions": [
+    "https://*.onrender.com/*",
+    "http://localhost:8080/*"
+  ],
   "action": {
     "default_popup": "popup.html",
     "default_title": "BookmarkAI"
