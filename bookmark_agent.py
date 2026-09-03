@@ -13,7 +13,7 @@ from langgraph.graph import END, START, StateGraph
 from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
 
-from ai_core import client
+from ai_core import client, model_name
 
 
 class AgentState(TypedDict):
@@ -56,7 +56,7 @@ class BookmarkAgent:
     async def _agent_node(self, state: AgentState) -> dict[str, list[dict[str, Any]]]:
         response = await asyncio.to_thread(
             client().chat.completions.create,
-            model=os.getenv("AICORE_DEPLOYMENT_ID"),
+            model=model_name(),
             messages=state["messages"],
             tools=self._tools,
             tool_choice="auto",

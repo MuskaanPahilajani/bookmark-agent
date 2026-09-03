@@ -12,6 +12,11 @@ _access_token: str | None = None
 _expires_at = 0.0
 
 
+def model_name() -> str:
+    """Return the model configured by the selected AI Core deployment."""
+    return os.getenv("AICORE_MODEL_NAME", "gpt-4.1-nano")
+
+
 def _required(name: str) -> str:
     value = os.getenv(name)
     if not value:

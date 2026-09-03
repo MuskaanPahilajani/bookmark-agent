@@ -14,10 +14,9 @@ from urllib.parse import urlparse, urlunparse
 import httpx
 from bs4 import BeautifulSoup
 
-from ai_core import client
+from ai_core import client, model_name
 
 STORE_PATH = Path(os.getenv("BOOKMARK_STORE_PATH", "bookmarks.json"))
-AI_CORE_DEPLOYMENT_ID = os.getenv("AICORE_DEPLOYMENT_ID")
 
 
 def _load_bookmarks() -> list[dict[str, Any]]:
@@ -59,7 +58,7 @@ def _normalize(bookmark: dict[str, Any], source: str | None = None) -> dict[str,
 
 def _completion(instructions: str, payload: Any) -> str:
     response = client().chat.completions.create(
-        model=AI_CORE_DEPLOYMENT_ID,
+        model=model_name(),
         messages=[
             {"role": "system", "content": instructions},
             {"role": "user", "content": json.dumps(payload, ensure_ascii=True)},
