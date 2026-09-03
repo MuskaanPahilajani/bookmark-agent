@@ -47,7 +47,10 @@ async function request(endpoint, body) {
 async function run(action) {
   try {
     const items = await bookmarks();
-    if (action === "sync") await request("sync", { chrome: items, edge: [] });
+    if (action === "sync") {
+      const isEdge = /Edg\//.test(navigator.userAgent);
+      await request("sync", isEdge ? { chrome: [], edge: items } : { chrome: items, edge: [] });
+    }
     else await request(action, { bookmarks: items });
   } catch (error) {
     result.textContent = `Error: ${error.message}`;

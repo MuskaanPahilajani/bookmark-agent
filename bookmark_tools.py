@@ -75,9 +75,9 @@ def sync_bookmarks(chrome: list[dict[str, Any]], edge: list[dict[str, Any]]) -> 
     """Merge Chrome and Edge bookmarks, de-duplicating canonical URLs."""
     merged: list[dict[str, str]] = []
     seen_urls: set[str] = set()
-    for source, bookmarks in (("chrome", chrome), ("edge", edge)):
+    for source, bookmarks in (("stored", _load_bookmarks()), ("chrome", chrome), ("edge", edge)):
         for bookmark in bookmarks:
-            normalized = _normalize(bookmark, source)
+            normalized = _normalize(bookmark, None if source == "stored" else source)
             canonical_url = _canonical_url(normalized["url"])
             if canonical_url not in seen_urls:
                 seen_urls.add(canonical_url)

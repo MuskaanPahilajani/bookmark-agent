@@ -83,7 +83,15 @@ class BookmarkAgent:
         for call in last_message["tool_calls"]:
             arguments = json.loads(call["function"]["arguments"])
             result = await self._session.call_tool(call["function"]["name"], arguments)
-            content = "\n".join(item.text for item in result.content if hasattr(item, "text"))
+            if result.isError:
+                error_text = "\n".join(item.text for item in result.content if hasattr(item, "text"))
+                raise RuntimeError(error_text or f"MCP tool {call['function']['name']} failed.")
+            if result.structuredContent is not None:
+                content = json.dumps(result.structuredContent)
+            else:
+                content = "\n".join(item.text for item in result.content if hasattr(item, "text"))
+            if not content:
+                raise RuntimeError(f"MCP tool {call['function']['name']} returned no content.")
             tool_messages.append({"role": "tool", "tool_call_id": call["id"], "content": content})
         return {"messages": tool_messages}
 
