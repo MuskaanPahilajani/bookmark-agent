@@ -74,7 +74,7 @@ async def invoke_tool(tool_name: str, arguments: dict[str, Any]) -> Any:
         if not tool_messages:
             raise RuntimeError("The agent did not invoke a tool.")
         return json.loads(tool_messages[-1]["content"])
-    except (RuntimeError, ValueError, json.JSONDecodeError) as error:
+    except Exception as error:
         raise HTTPException(status_code=502, detail=str(error)) from error
 
 

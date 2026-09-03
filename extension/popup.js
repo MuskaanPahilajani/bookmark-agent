@@ -33,8 +33,14 @@ async function request(endpoint, body) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body)
   });
-  const payload = await response.json();
-  if (!response.ok) throw new Error(payload.detail || "Request failed.");
+  const responseText = await response.text();
+  let payload;
+  try {
+    payload = JSON.parse(responseText);
+  } catch {
+    payload = null;
+  }
+  if (!response.ok) throw new Error(payload?.detail || `${response.status} ${response.statusText}: ${responseText}`);
   result.textContent = JSON.stringify(payload, null, 2);
 }
 
