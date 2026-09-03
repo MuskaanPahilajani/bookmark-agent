@@ -13,10 +13,10 @@ from urllib.parse import urlparse, urlunparse
 
 import httpx
 from bs4 import BeautifulSoup
-
-from ai_core import client, model_name
+from openai import OpenAI
 
 STORE_PATH = Path(os.getenv("BOOKMARK_STORE_PATH", "bookmarks.json"))
+OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
 
 
 def _load_bookmarks() -> list[dict[str, Any]]:
@@ -57,8 +57,11 @@ def _normalize(bookmark: dict[str, Any], source: str | None = None) -> dict[str,
 
 
 def _completion(instructions: str, payload: Any) -> str:
-    response = client().chat.completions.create(
-        model=model_name(),
+    api_key = os.getenv("OPENAI_API_KEY")
+    if not api_key:
+        raise RuntimeError("OPENAI_API_KEY must be configured for AI operations.")
+    response = OpenAI(api_key=api_key).chat.completions.create(
+        model=OPENAI_MODEL,
         messages=[
             {"role": "system", "content": instructions},
             {"role": "user", "content": json.dumps(payload, ensure_ascii=True)},

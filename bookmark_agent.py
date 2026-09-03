@@ -12,8 +12,7 @@ from typing import Any, TypedDict
 from langgraph.graph import END, START, StateGraph
 from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
-
-from ai_core import client, model_name
+from openai import OpenAI
 
 
 class AgentState(TypedDict):
@@ -27,9 +26,14 @@ class BookmarkAgent:
         self._stack = AsyncExitStack()
         self._session: ClientSession | None = None
         self._tools: list[dict[str, Any]] = []
+        self._client: OpenAI | None = None
         self.graph: Any = None
 
     async def start(self) -> None:
+        api_key = os.getenv("OPENAI_API_KEY")
+        if not api_key:
+            raise RuntimeError("OPENAI_API_KEY must be configured.")
+        self._client = OpenAI(api_key=api_key)
         parameters = StdioServerParameters(command=sys.executable, args=["mcp_server_bookmarks.py"])
         read_stream, write_stream = await self._stack.enter_async_context(stdio_client(parameters))
         self._session = await self._stack.enter_async_context(ClientSession(read_stream, write_stream))
@@ -54,9 +58,10 @@ class BookmarkAgent:
         return graph.compile()
 
     async def _agent_node(self, state: AgentState) -> dict[str, list[dict[str, Any]]]:
+        assert self._client is not None
         response = await asyncio.to_thread(
-            client().chat.completions.create,
-            model=model_name(),
+            self._client.chat.completions.create,
+            model=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
             messages=state["messages"],
             tools=self._tools,
             tool_choice="auto",

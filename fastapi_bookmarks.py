@@ -13,7 +13,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
 from bookmark_agent import BookmarkAgent
-from bookmark_tools import stored_bookmarks
+from bookmark_tools import find_duplicates, stored_bookmarks, sync_bookmarks
 
 
 class Bookmark(BaseModel):
@@ -94,7 +94,7 @@ async def root() -> dict[str, str]:
 
 @app.post("/sync")
 async def sync(payload: SyncRequest) -> Any:
-    return await invoke_tool("sync", {"chrome": as_dicts(payload.chrome), "edge": as_dicts(payload.edge)})
+    return sync_bookmarks(as_dicts(payload.chrome), as_dicts(payload.edge))
 
 
 @app.post("/categorize")
@@ -112,7 +112,7 @@ async def search(payload: SearchRequest) -> Any:
 @app.post("/duplicates")
 async def duplicates(payload: BookmarksRequest) -> Any:
     bookmarks = as_dicts(payload.bookmarks) if payload.bookmarks is not None else stored_bookmarks()
-    return await invoke_tool("duplicates", {"bookmarks": bookmarks})
+    return find_duplicates(bookmarks)
 
 
 @app.post("/summarize")

@@ -11,20 +11,10 @@ services:
         value: "3.12.8"
       - key: BOOKMARK_STORE_PATH
         value: /var/data/bookmarks.json
-      - key: AICORE_BASE_URL
+      - key: OPENAI_API_KEY
         sync: false
-      - key: AICORE_AUTH_URL
-        sync: false
-      - key: AICORE_CLIENT_ID
-        sync: false
-      - key: AICORE_CLIENT_SECRET
-        sync: false
-      - key: AICORE_DEPLOYMENT_ID
-        value: dc7a66e06efcb5bf
-      - key: AICORE_MODEL_NAME
+      - key: OPENAI_MODEL
         value: gpt-4o-mini
-      - key: AICORE_RESOURCE_GROUP
-        value: default
     disk:
       name: bookmark-data
       mountPath: /var/data
