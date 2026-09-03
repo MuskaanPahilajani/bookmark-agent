@@ -4,12 +4,14 @@ from __future__ import annotations
 
 import os
 import time
+import logging
 
 import httpx
 from openai import OpenAI
 
 _access_token: str | None = None
 _expires_at = 0.0
+logger = logging.getLogger(__name__)
 
 
 def model_name() -> str:
@@ -45,7 +47,13 @@ def _token() -> str:
 def client() -> OpenAI:
     """Create an OpenAI-compatible AI Core client with a fresh OAuth token."""
     deployment_id = _required("AICORE_DEPLOYMENT_ID")
-    base_url = f"{_required('AICORE_BASE_URL').rstrip('/')}/v2/inference/deployments/{deployment_id}"
+    base_url = f"{_required('AICORE_BASE_URL').rstrip('/')}/v2/inference/deployments/{deployment_id}/"
+    logger.info(
+        "AI Core inference endpoint=%s model=%s resource_group=%s",
+        base_url,
+        model_name(),
+        os.getenv("AICORE_RESOURCE_GROUP", "default"),
+    )
     return OpenAI(
         base_url=base_url,
         api_key=_token(),
